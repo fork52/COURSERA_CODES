@@ -30,7 +30,13 @@ X = [ones(m, 1) X];
 %       for each row.
 %       
 
+predictions =  sigmoid( X * all_theta' );
 
+
+%2 specifies that we need the index of the max element as well
+[ predict, index1 ] = max(predictions, [], 2);
+p = index1;
+% THE INDEX ITSELF IS THE ANSWER
 
 
 
