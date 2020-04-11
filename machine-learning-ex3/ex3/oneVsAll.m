@@ -63,11 +63,12 @@ X = [ones(m, 1) X];
     for c=1 : num_labels,
 
         disp(num_labels);
-        [theta] =  fmincg(@(t)(lrCostFunction(t, X, (y==c), lambda)), initial_theta, options);
+        [theta] =  fmincg(@(t)(lrCostFunction(t, X, (y==c), lambda)), initial_theta, options);s
         % disp(theta);
         all_theta(c,:) = theta';
     
     end
+    
     disp( size( all_theta) );
 
 

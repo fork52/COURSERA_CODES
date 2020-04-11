@@ -23,14 +23,17 @@ p = zeros(size(X, 1), 1);
 
 
 
+%Find the first activation
 Z2 =  [ones(m,1) ,X] * Theta1';
 
-
+%Consider bisas as one
 A2 = [ones(size(Z2),1), sigmoid(Z2) ];
 
+% Find Z3
 Z3 = A2*Theta2';
 
 A3 = sigmoid(Z3);
+
 
 [predict1, index1] = max(A3, [], 2);
 
