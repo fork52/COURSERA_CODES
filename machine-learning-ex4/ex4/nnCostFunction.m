@@ -26,13 +26,11 @@ Theta2 = reshape(nn_params((1 + (hidden_layer_size * (input_layer_size + 1))):en
 % Setup some useful variables
 m = size(X, 1);
 
-         
+
 % You need to return the following variables correctly 
 J = 0;
 Theta1_grad = zeros(size(Theta1));
 Theta2_grad = zeros(size(Theta2));
-
-
 
 
 % ====================== YOUR CODE HERE ======================
@@ -44,7 +42,6 @@ Theta2_grad = zeros(size(Theta2));
 %         cost function computation is correct by verifying the cost
 %         computed in ex4.m
 
-
 Xnew = [ ones(m,1) , X];
 
 Z2 = Xnew * Theta1';
@@ -53,45 +50,22 @@ A2 = [ ones( size(Z2,1) ,1) , sigmoid(Z2) ];
 Z3 = A2 * Theta2';
 A3 = sigmoid(Z3);
 
-size(A3)
-
 f_sum = zeros(num_labels,1);
 y_new = zeros(length(y),1);
 
 for i=1:num_labels,
-
     % Transform y
-    for j=1:m,
-        if y(j) == i,
-            y_new(j) = 1;
-        else
-            y_new(j) = 0;
-        end;
-    end;
-
-    % Find sum
-    for j = 1:num_labels,
-        f_sum(i) = f_sum(i) - log(A3(:,i))' * y_new -  (1-y_new)' * log(1-A3(:,i));
-    end;
+    y_new = y==i ;
+    f_sum(i) = f_sum(i) - log(A3(:,i))' * y_new -  (1-y_new)' * log(1-A3(:,i));
 end;
 
+cols1 = size(Theta1,2);
+cols2 = size(Theta2,2);
 
-J = (1/m) * sum(f_sum)*0.1;
+reg_term = sum(sum( Theta1(:,2:cols1).^ 2 )) + sum( sum( Theta2(:,2:cols2 ).^ 2 )) ;
+reg_term =  reg_term * lambda * (1/ (2*m) );
 
-% [predict1, index1] = max(A3, [], 2);
-% predictions = index1;
-
-
-% val1 = log(predictions)' * y
-% val2 = log((1-predictions))' * (1-y)
-
-% J = (1/m) * -(val1 + val2)
-
-% size(Theta1)
-% size(Theta2)
-
-
-
+J = (1/m) * sum(f_sum) + reg_term;
 
 %
 % Part 2: Implement the backpropagation algorithm to compute the gradients
@@ -116,11 +90,6 @@ J = (1/m) * sum(f_sum)*0.1;
 %               the regularization separately and then add them to Theta1_grad
 %               and Theta2_grad from Part 2.
 %
-
-
-
-
-
 
 
 
