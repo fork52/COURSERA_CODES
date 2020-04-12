@@ -82,6 +82,54 @@ J = (1/m) * sum(f_sum) + reg_term;
 %         Hint: We recommend implementing backpropagation using a for-loop
 %               over the training examples if you are implementing it for the 
 %               first time.
+
+
+% This shud be out of the loop
+D1 = zeros(size(Theta1));
+D2 = zeros(size(Theta2));
+
+
+for i=1:m,
+    data = Xnew(i,:); %put i
+    % size(data)
+
+    % Forward pass
+    z2 = data * Theta1';
+    a2 = [ ones( size(z2,1) ,1) , sigmoid(z2) ];
+
+    z3 = a2 * Theta2';
+    a3 = sigmoid(z3);
+
+    y_temp = zeros(num_labels,1);
+    y_temp (y(i),:) = 1;       %Put i
+
+
+    %Backward pass
+    delta3 = a3' - y_temp; 
+
+    gprime2 = a2 .* (1 - a2);
+    delta2 = Theta2' * delta3 .* gprime2';
+    delta2 = delta2(2:end);
+
+    D1 = D1 + delta2 * data; % a1 =data
+    D2 = D2 + delta3 * a2;
+
+end;
+
+%OUTSIDE THE LOOP
+Theta1_grad = (1/m) * D1;
+Theta2_grad = (1/m) * D2;
+
+% size(data)
+% size(D1)
+% size(D2)
+% size(a2)
+% size(z2)
+% size(a3)
+% size(z3)
+% size(delta2)
+
+
 %
 % Part 3: Implement regularization with the cost function and gradients.
 %
@@ -93,7 +141,8 @@ J = (1/m) * sum(f_sum) + reg_term;
 
 
 
-
+Theta1_grad(:,2:end) +=   (lambda/m) *  Theta1(:,2:end);
+Theta2_grad(:,2:end) +=  (lambda/m) * Theta2(:,2:end);
 
 
 
