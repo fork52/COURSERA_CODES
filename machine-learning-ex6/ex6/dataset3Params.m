@@ -31,7 +31,7 @@ for i=1:8,
         C_new = values_list(i);
         sigma_new = values_list(j);
         displaying = [i,j];
-        disp(displaying)
+        disp(displaying);
         myModel = svmTrain(X, y, C_new, @(x1, x2) gaussianKernel(x1, x2, sigma_new));
         predictions = svmPredict(myModel, Xval);
         current_error = mean(double(predictions ~= yval));
