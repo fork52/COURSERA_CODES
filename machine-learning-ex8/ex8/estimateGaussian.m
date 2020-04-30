@@ -26,8 +26,8 @@ for i=1:n,
     sigma2(i) = (1/m)* ( sum( (X(:,i) - mu(i)) .^ 2  ));
 end;
 
-mu
-sigma2
+% mu
+% sigma2
 
 
 

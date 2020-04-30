@@ -1,4 +1,4 @@
-function [J, grad] = cofiCostFunc(params, Y, R, num_users, num_movies, ...
+                                     function [J, grad] = cofiCostFunc(params, Y, R, num_users, num_movies, ...
                                   num_features, lambda)
 %COFICOSTFUNC Collaborative filtering cost function
 %   [J, grad] = COFICOSTFUNC(params, Y, R, num_users, num_movies, ...
@@ -41,17 +41,32 @@ Theta_grad = zeros(size(Theta));
 %
 
 
+% size(X)
+% size(Theta)
+% size(Y)
+% size(R)
+
+predictions = X*Theta';
+difference = predictions- Y;
+squared_diff = difference.^2;
+new_squared_diff = squared_diff .* R;
+
+J = 0.5 * sum(sum(new_squared_diff));
 
 
+pred_removed = difference .* R;
+
+X_grad = pred_removed * Theta;
+Theta_grad = pred_removed' * X; 
 
 
+term1 = (lambda/2) * sum(sum( Theta.^2 ));
+term2 = (lambda/2) * sum(sum( X.^2 ));
 
+J += term1 + term2;
 
-
-
-
-
-
+X_grad += lambda*X;
+Theta_grad += lambda*Theta;
 
 
 
